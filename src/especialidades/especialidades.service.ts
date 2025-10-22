@@ -1,26 +1,29 @@
-// src/especialidades/especialidades.service.ts
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateEspecialidadDto } from './dto/create-especialidade.dto';
+import { UpdateEspecialidadDto } from './dto/update-especialidade.dto';
+
 @Injectable()
 export class EspecialidadesService {
-  private especialidades = [
-    { id: 1, nombre: 'Ingeniería en Software' },
-  ];
+  constructor(private prisma: PrismaService) {}
+
+  create(data: CreateEspecialidadDto) {
+    return this.prisma.especialidad.create({ data });
+  }
 
   findAll() {
-    return this.especialidades;
+    return this.prisma.especialidad.findMany();
   }
 
   findOne(id: number) {
-    return this.especialidades.find(e => e.id === id);
+    return this.prisma.especialidad.findUnique({ where: { id } });
   }
 
-  create(createEspecialidadDto: CreateEspecialidadDto) {
-    const nuevaEspecialidad = {
-      id: this.especialidades.length + 1,
-      ...createEspecialidadDto,
-    };
-    this.especialidades.push(nuevaEspecialidad);
-    return nuevaEspecialidad;
+  update(id: number, data: UpdateEspecialidadDto) {
+    return this.prisma.especialidad.update({ where: { id }, data });
+  }
+
+  remove(id: number) {
+    return this.prisma.especialidad.delete({ where: { id } });
   }
 }

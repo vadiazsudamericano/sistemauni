@@ -11,11 +11,10 @@ import { MaestrosModule } from './maestros/maestros.module';
 import { EspecialidadesModule } from './especialidades/especialidades.module';
 import { MateriasModule } from './materias/materias.module';
 import { CiclosModule } from './ciclos/ciclos.module';
-import { MaestroMateriaModule } from './maestro-materia/maestro-materia.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule, CarrerasModule, UsuariosModule, EstudiantesModule, MaestrosModule, EspecialidadesModule, MateriasModule, CiclosModule, MaestroMateriaModule],
+  imports: [PrismaModule, CarrerasModule, UsuariosModule, EstudiantesModule, MaestrosModule, EspecialidadesModule, MateriasModule, CiclosModule],
   controllers: [AppController, UsuariosController],
   providers: [AppService, UsuariosService, PrismaService],
 })

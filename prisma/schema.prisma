@@ -12,16 +12,16 @@ model Usuario {
   nombre    String
   email     String   @unique
   password  String
-  rol       String?  // opcional, si no quieres rol lo puedes quitar
+  rol       String?  // opcional
   creadoEn  DateTime @default(now())
 }
 
 model Carrera {
-  id         Int         @id @default(autoincrement())
-  nombre     String      @unique
-  maestros   Maestro[]
+  id          Int         @id @default(autoincrement())
+  nombre      String      @unique
+  maestros    Maestro[]
   estudiantes Estudiante[]
-  materias   Materia[]
+  materias    Materia[]
 }
 
 model Especialidad {
@@ -31,14 +31,13 @@ model Especialidad {
 }
 
 model Maestro {
-  id             Int               @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   nombre         String
   apellido       String
   especialidadId Int
-  especialidad   Especialidad      @relation(fields: [especialidadId], references: [id])
+  especialidad   Especialidad @relation(fields: [especialidadId], references: [id])
   carreraId      Int
-  carrera        Carrera           @relation(fields: [carreraId], references: [id])
-  maestroMateria MaestroMateria[]
+  carrera        Carrera      @relation(fields: [carreraId], references: [id])
 }
 
 model Estudiante {
@@ -50,32 +49,13 @@ model Estudiante {
 }
 
 model Materia {
-  id             Int              @id @default(autoincrement())
-  nombre         String
-  carreraId      Int
-  carrera        Carrera          @relation(fields: [carreraId], references: [id])
-  maestroMateria MaestroMateria[]
+  id        Int     @id @default(autoincrement())
+  nombre    String
+  carreraId Int
+  carrera   Carrera @relation(fields: [carreraId], references: [id])
 }
 
 model Ciclo {
-  id        Int       @id @default(autoincrement())
-  nombre    String
-  secciones Seccion[]
-}
-
-model MaestroMateria {
-  id        Int        @id @default(autoincrement())
-  maestroId Int
-  materiaId Int
-  maestro   Maestro    @relation(fields: [maestroId], references: [id])
-  materia   Materia    @relation(fields: [materiaId], references: [id])
-  secciones Seccion[]
-}
-
-model Seccion {
-  id              Int             @id @default(autoincrement())
-  maestroMateriaId Int
-  cicloId         Int
-  maestroMateria  MaestroMateria  @relation(fields: [maestroMateriaId], references: [id])
-  ciclo           Ciclo           @relation(fields: [cicloId], references: [id])
+  id     Int    @id @default(autoincrement())
+  nombre String
 }

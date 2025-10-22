@@ -1,10 +1,16 @@
-import { Controller, Get, Param, Post, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './create-usuario.dto';
+import { UpdateUsuarioDto } from './update-usuario.dto';
 
-@Controller('usuarios')
+@Controller('usuarios') // ruta base en plural
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
+
+  @Post()
+  create(@Body() data: CreateUsuarioDto) {
+    return this.usuariosService.create(data);
+  }
 
   @Get()
   findAll() {
@@ -12,12 +18,17 @@ export class UsuariosController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usuariosService.findOne(id);
+  findOne(@Param('id') id: string) {
+    return this.usuariosService.findOne(+id);
   }
 
-  @Post()
-  create(@Body() dto: CreateUsuarioDto) {
-    return this.usuariosService.create(dto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: UpdateUsuarioDto) {
+    return this.usuariosService.update(+id, data);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usuariosService.remove(+id);
   }
 }

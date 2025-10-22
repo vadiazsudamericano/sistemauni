@@ -1,31 +1,29 @@
-// src/ciclos/ciclos.service.ts
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateCicloDto } from './dto/create-ciclo.dto';
+import { UpdateCicloDto } from './dto/update-ciclo.dto';
 
 @Injectable()
 export class CiclosService {
-  private ciclos = [
-    { id: 1, nombre: '2025-I' },
-    { id: 2, nombre: '2025-II' },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  // Obtener todos los ciclos
+  create(data: CreateCicloDto) {
+    return this.prisma.ciclo.create({ data });
+  }
+
   findAll() {
-    return this.ciclos;
+    return this.prisma.ciclo.findMany();
   }
 
-  // Obtener un ciclo por id
   findOne(id: number) {
-    return this.ciclos.find(c => c.id === id);
+    return this.prisma.ciclo.findUnique({ where: { id } });
   }
 
-  // Crear un nuevo ciclo
-  create(createCicloDto: CreateCicloDto) {
-    const nuevoCiclo = {
-      id: this.ciclos.length + 1,
-      ...createCicloDto,
-    };
-    this.ciclos.push(nuevoCiclo);
-    return nuevoCiclo;
+  update(id: number, data: UpdateCicloDto) {
+    return this.prisma.ciclo.update({ where: { id }, data });
+  }
+
+  remove(id: number) {
+    return this.prisma.ciclo.delete({ where: { id } });
   }
 }

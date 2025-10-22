@@ -1,34 +1,29 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
+import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 
 @Injectable()
 export class EstudiantesService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
-    const data = await this.prisma.estudiante.findMany();
-    return { status: 'success', data };
+  create(data: CreateEstudianteDto) {
+    return this.prisma.estudiante.create({ data });
   }
 
-  async findOne(id: number) {
-    const estudiante = await this.prisma.estudiante.findUnique({ where: { id } });
-    if (!estudiante) throw new NotFoundException('Estudiante no encontrado');
-    return { status: 'success', data: estudiante };
+  findAll() {
+    return this.prisma.estudiante.findMany();
   }
 
-  async create(dto: CreateEstudianteDto) {
-  try {
-    const estudiante = await this.prisma.estudiante.create({
-      data: dto,
-    });
-    return {
-      status: 'success',
-      data: estudiante,
-    };
-  } catch (error) {
-    console.error(error);
-    throw new Error('No se pudo crear el estudiante. Revisa los datos.');
+  findOne(id: number) {
+    return this.prisma.estudiante.findUnique({ where: { id } });
   }
-}
+
+  update(id: number, data: UpdateEstudianteDto) {
+    return this.prisma.estudiante.update({ where: { id }, data });
+  }
+
+  remove(id: number) {
+    return this.prisma.estudiante.delete({ where: { id } });
+  }
 }
